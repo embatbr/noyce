@@ -1,2 +1,3 @@
-# noyce
-IC descriptor
+# Noyce
+
+Simulator for semiconductor-based electronic circuits.
