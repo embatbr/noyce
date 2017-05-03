@@ -33,11 +33,11 @@ class Pin(object):
 
 class Diode(object):
 
-    def __init__(self, saturation_current, ideality_factor=1):
+    def __init__(self, saturation_current, max_fwd_ddp, ideality_factor=1):
         assert 1 <= ideality_factor <= 2, 'Idealty factor must be between 1 and 2.'
 
         self.saturation_current = saturation_current
-        self.max_fwd_ddp = 0.7
+        self.max_fwd_ddp = max_fwd_ddp
         self.ideality_factor = ideality_factor
         self.thermal_ddp = 0.02585
 
@@ -71,8 +71,20 @@ class Diode(object):
         return self.saturation_current * math.expm1(exponent)
 
 
+class SiliconDiode(Diode):
+
+    def __init__(self, saturation_current, ideality_factor=1):
+        super(SiliconDiode, self).__init__(saturation_current, 0.7, ideality_factor)
+
+
+class GermaniumDiode(Diode):
+
+    def __init__(self, saturation_current, ideality_factor=1):
+        super(GermaniumDiode, self).__init__(saturation_current, 0.3, ideality_factor)
+
+
 if __name__ == '__main__':
-    diode = Diode(25 / 1000000000)
+    diode = SiliconDiode(25 / 1000000000)
     print(diode)
     print()
 
@@ -100,7 +112,7 @@ if __name__ == '__main__':
     print('current:', diode.calculate_current())
 
     print('\n===============\n')
-    diode = Diode(25 / 1000000000, 1.3)
+    diode = SiliconDiode(25 / 1000000000, 1.3)
     print(diode)
     print()
 
